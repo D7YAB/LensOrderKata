@@ -6,6 +6,18 @@ namespace LensOrderKata
 {
     public class LensCodeParser
     {
+        Lens[] lenses = new Lens[]
+        {
+            new Lens { Code = "SV01", Description = "Single Vision", Price = 50.0 },
+            new Lens { Code = "BF02", Description = "Bifocal", Price = 75.0 },
+            new Lens { Code = "VF03", Description = "Varifocal", Price = 100.0 }
+        };
+
+        public bool GetPriceForCode(string lensCode)
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Parses a comma-separated string and returns a list of individual code values.
         /// </summary>

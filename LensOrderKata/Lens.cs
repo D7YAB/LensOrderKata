@@ -9,8 +9,8 @@ namespace LensOrderKata
     /// </summary>
     public class Lens
     {
-        string Code { get; set; } = string.Empty;
-        string Description { get; set; } = string.Empty;
-        double Price { get; set; } = 0.0;
+        public string Code { get; set; } = string.Empty;
+        public string Description { get; set; } = string.Empty;
+        public double Price { get; set; } = 0.0;
     }
 }
