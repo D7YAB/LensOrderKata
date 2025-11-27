@@ -87,5 +87,17 @@ namespace UnitTests
             // Act and Assert
             Assert.Throws<ArgumentException>(() => parser.GetPriceForCode(code));
         }
+
+        /// <summary>
+        /// Ensure invalid lens code in input throws exception
+        /// </summary>
+        [TestCase("SV01, VF03, SV05, BF02")]
+        public void InvalidCodeInList_ShouldThrowException(string input)
+        {
+            // Arrange
+            var parser = new LensCodeParser();
+            // Act and Assert
+            Assert.Throws<ArgumentException>(() => parser.GetTotalPrice(input));
+        }
     }
 }
