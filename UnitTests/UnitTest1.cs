@@ -1,6 +1,4 @@
-﻿using Microsoft.VisualStudio.TestPlatform.Utilities;
-using System.Collections.Generic;
-
+﻿using LensOrderKata;
 namespace UnitTests
 {
     public class Tests
@@ -40,10 +38,11 @@ namespace UnitTests
         public void ParseInput_ShouldReturnIndividualCodes()
         {
             // Arrange
+            var parser = new LensCodeParser();
             var lensCodes = "SV01, VF03, SV01, BF02";
             var expectedOutput = new List<string> { "SV01", "VF03", "SV01", "BF02" };
             // Act
-            var result = new List<string> { "SV01", "VF03", "SV01", "BF02" };
+            var result = parser.ParseCsvToCodes(lensCodes);
             // Assert
             Assert.That(result, Is.EqualTo(expectedOutput));
         }
