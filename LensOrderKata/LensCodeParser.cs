@@ -45,6 +45,11 @@ namespace LensOrderKata
         {
             var lens = GetLensByCode(lensCode);
 
+            if(lens == null)
+            {
+                throw new ArgumentException($"Lens with code {lensCode} not found.");
+            }
+
             return lens.Price;
         }
 

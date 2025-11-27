@@ -85,7 +85,7 @@ namespace UnitTests
             // Arrange
             var parser = new LensCodeParser();
             // Act and Assert
-            Assert.Throws<NullReferenceException>(() => parser.GetPriceForCode(code));
+            Assert.Throws<ArgumentException>(() => parser.GetPriceForCode(code));
         }
     }
 }
