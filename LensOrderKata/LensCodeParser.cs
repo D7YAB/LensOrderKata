@@ -13,7 +13,8 @@ namespace LensOrderKata
         /// <returns>A list of strings representing the individual codes parsed from the input.</returns>
         public List<string> ParseCsvToCodes(string csv)
         {
-            var parsedCodes = csv.Split(',').ToList();
+            // Split the input string by commas and trim any whitespace from each code
+            var parsedCodes = csv.Split(',').Select(code => code.Trim()).ToList();
 
             return parsedCodes;
         }
