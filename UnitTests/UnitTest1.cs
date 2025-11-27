@@ -45,5 +45,19 @@ namespace UnitTests
             // Assert
             Assert.That(result, Is.EqualTo(expectedOutput));
         }
+
+        /// <summary>
+        /// Take a lens code and ensure the correct price is returned.
+        /// </summary>
+        [TestCase("SV01", 100)]
+        public void LensCode_ShouldReturnPrice(string lensCode, double price)
+        {
+            // Arrange
+            var parser = new LensCodeParser();
+            // Act
+            var result = parser.GetPriceForCode(lensCode);
+            // Assert
+            Assert.That(result, Is.EqualTo(price));
+        }
     }
 }
