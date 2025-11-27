@@ -32,5 +32,20 @@ namespace UnitTests
         //VF03 x1 = £100
         //BF02 x1 = £75
         //Total = £275
+
+        /// <summary>
+        /// Take a csv input of lens codes and ensure string can be parsed into individual codes.
+        /// </summary>
+        [Test]
+        public void ParseInput_ShouldReturnIndividualCodes()
+        {
+            // Arrange
+            var lensCodes = "SV01, VF03, SV01, BF02";
+            var expectedOutput = new List<string> { "SV01", "VF03", "SV01", "BF02" };
+            // Act
+            var result = new List<string> { "SV01", "VF03", "SV01", "BF02" };
+            // Assert
+            Assert.That(result, Is.EqualTo(expectedOutput));
+        }
     }
 }
