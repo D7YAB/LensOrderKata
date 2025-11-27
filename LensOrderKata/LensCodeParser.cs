@@ -19,8 +19,8 @@ namespace LensOrderKata
             double total = 0.0;
             foreach (var code in lensCodesList)
             {
-                var lens = GetLensByCode(code);
-                total += lens.Price;
+                var price = GetPriceForCode(code);
+                total += price;
             }
             return total;
         }
