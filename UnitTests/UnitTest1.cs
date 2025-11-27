@@ -75,5 +75,19 @@ namespace UnitTests
             // Assert
             Assert.That(totalCost, Is.EqualTo(expectedTotal));
         }
+
+        /// <summary>
+        /// Tests that the parser throws an exception when invalid lens codes are present in the input string.
+        /// </summary>
+        [TestCase("SV05")]
+        public void SingleInvalidCode_ShouldThrowException(string code)
+        {
+            // Arrange
+            var parser = new LensCodeParser();
+            // Act
+            var result = parser.GetPriceForCode(code);
+            // Assert
+            Assert.That(result, Is.EqualTo(null));
+        }
     }
 }
