@@ -99,5 +99,23 @@ namespace UnitTests
             // Act and Assert
             Assert.Throws<ArgumentException>(() => parser.GetTotalPrice(input));
         }
+
+        /// <summary>
+        /// Tests that a list of lens codes produces the correct summary and total cost.
+        /// </summary>
+        [TestCase(
+            "SV01, VF03, SV01, BF02",
+            "SV01 x2 = £100\r\nVF03 x1 = £100\r\nBF02 x1 = £75\r\nTotal = £275")]
+        public void CalculateOrderSummary_ShouldReturnCorrectSummary(string csvInput, string expectedOutput)
+        {
+            // Arrange
+            var parser = new LensCodeParser();
+
+            // Act
+            var summary = parser.CalculateOrderSummary(csvInput);
+
+            // Assert
+            Assert.That(summary, Is.EqualTo(expectedOutput));
+        }
     }
 }
