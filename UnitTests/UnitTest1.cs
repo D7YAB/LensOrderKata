@@ -70,13 +70,8 @@ namespace UnitTests
         {
             // Arrange
             var parser = new LensCodeParser();
-            var lensCodes = parser.ParseCsvToCodes(input);
             // Act
-            double totalCost = 0;
-            foreach (var code in lensCodes)
-            {
-                totalCost += parser.GetPriceForCode(code);
-            }
+            var totalCost = parser.GetTotalPrice(input);
             // Assert
             Assert.That(totalCost, Is.EqualTo(expectedTotal));
         }
