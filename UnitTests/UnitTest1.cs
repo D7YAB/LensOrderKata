@@ -61,5 +61,24 @@ namespace UnitTests
             // Assert
             Assert.That(result, Is.EqualTo(price));
         }
+
+        /// <summary>
+        /// Ensure total cost is calculated correctly from a list of lens codes as string.
+        /// </summary>
+        [TestCase("SV01, VF03, SV01, BF02", 275)]
+        public void CalculateTotalCost_ShouldReturnCorrectTotal(string input, double expectedTotal)
+        {
+            // Arrange
+            var parser = new LensCodeParser();
+            var lensCodes = parser.ParseCsvToCodes(input);
+            // Act
+            double totalCost = 0;
+            foreach (var code in lensCodes)
+            {
+                totalCost += parser.GetPriceForCode(code);
+            }
+            // Assert
+            Assert.That(totalCost, Is.EqualTo(expectedTotal));
+        }
     }
 }
