@@ -13,9 +13,27 @@ namespace LensOrderKata
             new Lens { Code = "VF03", Description = "Varifocal", Price = 100.0 }
         };
 
-        public bool GetPriceForCode(string lensCode)
+        /// <summary>
+        /// Retrieves the lens associated with the specified code.
+        /// </summary>
+        /// <param name="code">The unique code identifying the lens to retrieve. Cannot be null.</param>
+        /// <returns>The lens that matches the specified code, or null if no matching lens is found.</returns>
+        public Lens? GetLensByCode(string code)
         {
-            throw new NotImplementedException();
+            var lens = lenses.FirstOrDefault(x => x.Code == code); ;
+            return lens;
+        }
+
+        /// <summary>
+        /// Retrieves the price associated with the specified lens code.
+        /// </summary>
+        /// <param name="lensCode">code identifying the lens for which to obtain the price</param>
+        /// <returns>The price of the lens corresponding to the provided code.</returns>
+        public double GetPriceForCode(string lensCode)
+        {
+            var lens = GetLensByCode(lensCode);
+
+            return lens.Price;
         }
 
         /// <summary>
