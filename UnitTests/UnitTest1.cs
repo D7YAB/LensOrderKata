@@ -50,6 +50,8 @@ namespace UnitTests
         /// Take a lens code and ensure the correct price is returned.
         /// </summary>
         [TestCase("SV01", 50)]
+        [TestCase("BF02", 75)]
+        [TestCase("VF03", 100)]
         public void LensCode_ShouldReturnPrice(string lensCode, double price)
         {
             // Arrange
