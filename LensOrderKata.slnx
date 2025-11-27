@@ -1,0 +1,4 @@
+<Solution>
+  <Project Path="LensOrderKata/LensOrderKata.csproj" />
+  <Project Path="UnitTests/UnitTests.csproj" />
+</Solution>
