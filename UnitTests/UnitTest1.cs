@@ -54,11 +54,11 @@ namespace UnitTests
         public void LensCode_ShouldReturnPrice(string lensCode, double price)
         {
             // Arrange
-            var parser = new LensCodeParser(new InMemoryLensRepository(), new StringCsvInputParser());
+            var lensRepository = new InMemoryLensRepository();
             // Act
-            var result = parser.GetPriceForCode(lensCode);
+            var result = lensRepository.GetByCode(lensCode);
             // Assert
-            Assert.That(result, Is.EqualTo(price));
+            Assert.That(result.Price, Is.EqualTo(price));
         }
 
         /// <summary>
@@ -68,9 +68,20 @@ namespace UnitTests
         public void CalculateTotalCost_ShouldReturnCorrectTotal(string input, double expectedTotal)
         {
             // Arrange
-            var parser = new LensCodeParser(new InMemoryLensRepository(), new StringCsvInputParser());
+            var lensRepository = new InMemoryLensRepository();
+            var inputParser = new StringCsvInputParser();
+
+            var codes = inputParser.Parse(input);
+            var order = new LensOrder();
+
+            foreach (var code in codes)
+            {
+                var lens = lensRepository.GetByCode(code);
+                order.AddLens(lens);
+            }
+
             // Act
-            var totalCost = parser.GetTotalPrice(input);
+            var totalCost = order.GetTotalPrice();
             // Assert
             Assert.That(totalCost, Is.EqualTo(expectedTotal));
         }
@@ -82,9 +93,10 @@ namespace UnitTests
         public void SingleInvalidCode_ShouldThrowException(string code)
         {
             // Arrange
-            var parser = new LensCodeParser(new InMemoryLensRepository(), new StringCsvInputParser());
+            var lensRepository = new InMemoryLensRepository();
+
             // Act and Assert
-            Assert.Throws<ArgumentException>(() => parser.GetPriceForCode(code));
+            Assert.Throws<ArgumentException>(() => lensRepository.GetByCode(code));
         }
 
         /// <summary>
@@ -93,10 +105,8 @@ namespace UnitTests
         [TestCase("SV01, VF03, SV05, BF02")]
         public void InvalidCodeInList_ShouldThrowException(string input)
         {
-            // Arrange
             var parser = new LensCodeParser(new InMemoryLensRepository(), new StringCsvInputParser());
-            // Act and Assert
-            Assert.Throws<ArgumentException>(() => parser.GetTotalPrice(input));
+            Assert.Throws<ArgumentException>(() => parser.CalculateOrderSummaryAsString(input));
         }
 
         /// <summary>

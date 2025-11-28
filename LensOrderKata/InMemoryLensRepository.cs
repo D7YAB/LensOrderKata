@@ -17,11 +17,16 @@ namespace LensOrderKata
         {
             if (code == null)
             {
-                return null;
+                throw new ArgumentException($"Lens with code {code} not found.");
             }
 
             var lens = lenses
                 .FirstOrDefault(x => x.Code.Equals(code, StringComparison.OrdinalIgnoreCase));
+
+            if (lens == null)
+            {
+                throw new ArgumentException($"Lens with code {code} not found.");
+            }
 
             return lens;
         }

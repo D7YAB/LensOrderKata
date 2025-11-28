@@ -17,21 +17,6 @@ namespace LensOrderKata
         }
 
         /// <summary>
-        /// Calculates the total price for a collection of lenses specified by their codes.
-        /// </summary>
-        public double GetTotalPrice(string lensCodes)
-        {
-            var lensCodesList = inputParser.Parse(lensCodes);
-            double total = 0.0;
-            foreach (var code in lensCodesList)
-            {
-                var price = GetPriceForCode(code);
-                total += price;
-            }
-            return total;
-        }
-
-        /// <summary>
         /// Retrieves the lens associated with the specified code.
         /// </summary>
         /// <param name="code">The unique code identifying the lens to retrieve. Cannot be null.</param>
@@ -44,23 +29,6 @@ namespace LensOrderKata
         }
 
         /// <summary>
-        /// Retrieves the price associated with the specified lens code.
-        /// </summary>
-        /// <param name="lensCode">code identifying the lens for which to obtain the price</param>
-        /// <returns>The price of the lens corresponding to the provided code.</returns>
-        public double GetPriceForCode(string lensCode)
-        {
-            var lens = GetLensByCode(lensCode);
-
-            if(lens == null)
-            {
-                throw new ArgumentException($"Lens with code {lensCode} not found.");
-            }
-
-            return lens.Price;
-        }
-
-        /// <summary>
         /// Generates a formatted summary of the order, including itemized lens codes, quantities, individual totals,
         /// and the overall total price.
         /// </summary>
@@ -68,61 +36,39 @@ namespace LensOrderKata
         {
             if (string.IsNullOrWhiteSpace(InputString))
             {
-                throw new ArgumentException($"Input cannot be empty.");
+                throw new ArgumentException("Input cannot be empty.");
             }
 
             var codes = inputParser.Parse(InputString);
+            var order = new LensOrder();
             var invalidCodes = new List<string>();
-            var lensCounts = new Dictionary<string, int>();
-
-            if (codes.Any(string.IsNullOrEmpty))
-            {
-                throw new ArgumentException($"Input cannot contain empty codes.");
-            }
 
             foreach (var code in codes)
             {
-                try 
-                {
-                    GetPriceForCode(code);
-                }
-                catch (ArgumentException)
+                var lens = GetLensByCode(code);
+                if (lens == null)
                 {
                     invalidCodes.Add(code);
-                    continue;
-                }
-
-                if (!lensCounts.ContainsKey(code))
-                {
-                    var lens = GetLensByCode(code);
-                    lensCounts.Add(lens.Code, 1);
                 }
                 else
                 {
-                    lensCounts[code]++;
+                    order.AddLens(lens);
                 }
             }
 
-            // Throw if there are invalid codes
-            if (invalidCodes.Any())
+            if (invalidCodes.Count > 0)
             {
                 throw new ArgumentException($"Lens with code {string.Join(", ", invalidCodes)} not found.");
             }
 
-            var total = GetTotalPrice(InputString);
-            var output = string.Empty;
-
-            foreach (var lens in lensCounts)
+            var output = new StringBuilder();
+            foreach (var orderedLens in order.GetOrderedLenses())
             {
-                var lensDetails = GetLensByCode(lens.Key);
-                if(lensDetails != null)
-                {
-                    output += $"{lensDetails.Code} x{lens.Value} = £{lensDetails.Price * lens.Value}\r\n";
-                }
+                output.AppendLine($"{orderedLens.Lens.Code} x{orderedLens.Quantity} = £{orderedLens.TotalPrice}");
             }
-            output += $"Total = £{total}";
+            output.Append($"Total = £{order.GetTotalPrice()}");
 
-            return output;
+            return output.ToString();
         }
     }
 }
