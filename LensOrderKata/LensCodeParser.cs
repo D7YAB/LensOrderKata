@@ -72,9 +72,19 @@ namespace LensOrderKata
             {
                 throw new ArgumentException("Invalid input detected. Please use commas to separate lens codes.");
             }
+            var parsedCodes = new List<string>();
+
+            if (!csv.Contains(","))
+            {
+                parsedCodes = csv.Split(' ').ToList();
+                if (parsedCodes.Count>0 && GetLensByCode(csv.Trim()) is null)
+                {
+                    throw new ArgumentException("Invalid input detected. Please use commas to separate lens codes.");
+                }
+            }
 
             // Split the input string by commas and trim any whitespace from each code
-            var parsedCodes = csv.Split(',').Select(code => code.Trim()).ToList();
+            parsedCodes = csv.Split(',').Select(code => code.Trim()).ToList();
 
             return parsedCodes;
         }
