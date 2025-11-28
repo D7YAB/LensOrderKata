@@ -1,4 +1,7 @@
 <Solution>
+  <Project Path="LensOrderKata.Application/LensOrderKata.Application.csproj" Id="a9594505-e378-4c1f-aac2-c42ee97becbe" />
+  <Project Path="LensOrderKata.Domain/LensOrderKata.Core.csproj" Id="40591c77-2171-43eb-bc01-8267808bdb57" />
+  <Project Path="LensOrderKata.Infrastructure/LensOrderKata.Infrastructure.csproj" Id="1bd3972b-9a5e-46d4-bbb6-589a5b5b1a62" />
   <Project Path="LensOrderKata/LensOrderKata.csproj" />
   <Project Path="UnitTests/UnitTests.csproj" />
 </Solution>

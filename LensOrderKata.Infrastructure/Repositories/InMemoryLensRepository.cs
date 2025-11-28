@@ -1,9 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using LensOrderKata.Application.Interfaces;
+using LensOrderKata.Core.Models;
 
-namespace LensOrderKata
+namespace LensOrderKata.Infrastructure.Repositories
 {
+    /// <summary>
+    /// Provides an in-memory implementation of the <see cref="ILensRepository"/> interface for managing and retrieving
+    /// lens data.
+    /// </summary>
     public class InMemoryLensRepository : ILensRepository
     {
         private readonly List<Lens> lenses = new()
@@ -13,18 +16,19 @@ namespace LensOrderKata
             new Lens { Code = "VF03", Description = "Varifocal", Price = 100.0 }
         };
 
+        /// <summary>
+        /// Retrieves a lens from the collection that matches the specified code, using a case-insensitive comparison.
+        /// </summary>
         public Lens? GetByCode(string code)
         {
-            if (code == null)
-            {
-                throw new ArgumentException($"Lens with code {code} not found.");
-            }
-
+            // Trim whitespace from the input code
             code = code.Trim();
 
+            // Find the lens with a case-insensitive match
             var lens = lenses
                 .FirstOrDefault(x => x.Code.Equals(code, StringComparison.OrdinalIgnoreCase));
 
+            // Throw an exception if the lens is not found
             if (lens == null)
             {
                 throw new ArgumentException($"Lens with code {code} not found.");
@@ -33,8 +37,12 @@ namespace LensOrderKata
             return lens;
         }
 
+        /// <summary>
+        /// Retrieves all available lens objects in the collection.
+        /// </summary>
         public IEnumerable<Lens> GetAll()
         {
+            // Return the complete list of lenses
             return lenses;
         }
     }

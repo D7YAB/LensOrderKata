@@ -1,9 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LensOrderKata
+﻿namespace LensOrderKata.Core.Models
 {
+    /// <summary>
+    /// Represents an order containing one or more lenses, including their quantities and pricing information.
+    /// </summary>
     public class LensOrder
     {
         private List<OrderedLens> orderedLenses = new List<OrderedLens>();

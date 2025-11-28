@@ -1,9 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using LensOrderKata.Application.Interfaces;
 
-namespace LensOrderKata
+namespace LensOrderKata.Infrastructure.Parsers
 {
+    /// <summary>
+    /// Provides functionality to parse a comma-separated string input into a list of codes, validating the format and
+    /// allowed characters.
+    /// </summary>
     public class StringCsvInputParser : IInputParser
     {
         public List<string> Parse(string input)

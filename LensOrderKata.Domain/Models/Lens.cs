@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace LensOrderKata
+﻿namespace LensOrderKata.Core.Models
 {
     /// <summary>
     /// Represents a lens with its code, description, and price.

@@ -1,0 +1,48 @@
+LensOrderKata.sln
+/src
+  /LensOrderKata.Domain                      (Class Library - no external deps)
+    /Models
+      Lens.cs
+      OrderedLens.cs
+      LensOrder.cs
+    /Exceptions
+      LensNotFoundException.cs
+
+  /LensOrderKata.Application                 (Class Library - depends on Domain)
+    /Contracts                                <-- interfaces / DTOs / UseCase ports
+      ILensRepository.cs
+      IInputParser.cs
+      IOrderSummaryFormatter.cs
+    /UseCases
+      ParseLensCodesUseCase.cs                (or LensCodeParser)
+      CreateOrderUseCase.cs
+    /Dtos
+      ParsedOrderDto.cs
+
+  /LensOrderKata.Infrastructure              (Class Library - depends on Application + Domain)
+    /Repositories
+      InMemoryLensRepository.cs               (implements ILensRepository)
+    /Parsing
+      StringCsvInputParser.cs                 (implements IInputParser)
+    /Formatters
+      TextOrderSummaryFormatter.cs            (implements IOrderSummaryFormatter)
+    /CompositionRoot
+      DependencyInjection.cs                  (extension methods to register services)
+
+  /LensOrderKata.UI                          (Console / Web / CLI - depends on Application + Infrastructure)
+    Program.cs                                (composition root calls CompositionRoot to wire DI)
+    appsettings.json
+
+/tests
+  /LensOrderKata.UnitTests                   (NUnit / xUnit)
+    LensOrderServiceTests.cs
+    StringCsvInputParserTests.cs
+    InMemoryLensRepositoryTests.cs
+
+/build
+  Directory.Build.props
+  .editorconfig
+/docs
+  ARCHITECTURE.md
+/.gitignore
+README.md
