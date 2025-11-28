@@ -161,5 +161,53 @@ namespace UnitTests
             var ex = Assert.Throws<ArgumentException>(() => parser.CalculateOrderSummaryAsString(input));
             Assert.That(ex.Message, Is.EqualTo(expectedMessage));
         }
+
+        /// <summary>
+        /// Ensures that the order summary calculation correctly handles input strings containing extra whitespace
+        /// between lens codes.
+        /// </summary>
+        [TestCase(" SV01 , VF03 ,  SV01 , BF02 ", "SV01 x2 = £100\r\nVF03 x1 = £100\r\nBF02 x1 = £75\r\nTotal = £275")]
+        public void InputWithExtraWhitespace_ShouldReturnCorrectSummary(string input, string expectedOutput)
+        {
+            var parser = new LensCodeParser();
+            var summary = parser.CalculateOrderSummaryAsString(input);
+            Assert.That(summary, Is.EqualTo(expectedOutput));
+        }
+
+        /// <summary>
+        /// Ensures that duplicate lens codes in the input string are counted correctly when generating the order
+        /// summary.
+        /// </summary>
+        [TestCase("SV01, SV01, SV01", "SV01 x3 = £150\r\nTotal = £150")]
+        public void DuplicateCodes_ShouldCountCorrectly(string input, string expectedOutput)
+        {
+            var parser = new LensCodeParser();
+            var summary = parser.CalculateOrderSummaryAsString(input);
+            Assert.That(summary, Is.EqualTo(expectedOutput));
+        }
+
+        /// <summary>
+        /// Ensures that providing only invalid lens codes results in an ArgumentException containing all invalid codes
+        /// in the exception message.
+        /// </summary>
+        [TestCase("XX01, YY02, ZZ03", "Lens with code XX01, YY02, ZZ03 not found.")]
+        public void AllInvalidCodes_ShouldThrowExceptionWithAllInvalidCodes(string input, string expectedMessage)
+        {
+            var parser = new LensCodeParser();
+            var ex = Assert.Throws<ArgumentException>(() => parser.CalculateOrderSummaryAsString(input));
+            Assert.That(ex.Message, Is.EqualTo(expectedMessage));
+        }
+
+        /// <summary>
+        /// Verifies that providing a single lens code input produces the expected order summary string.
+        /// </summary>
+        [TestCase("VF03", "VF03 x1 = £100\r\nTotal = £100")]
+        public void SingleCodeInput_ShouldReturnCorrectSummary(string input, string expectedOutput)
+        {
+            var parser = new LensCodeParser();
+            var summary = parser.CalculateOrderSummaryAsString(input);
+            Assert.That(summary, Is.EqualTo(expectedOutput));
+        }
+
     }
 }
