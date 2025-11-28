@@ -75,7 +75,10 @@ namespace LensOrderKata
         /// </summary>
         public string CalculateOrderSummaryAsString(string InputString)
         {
-
+            if (string.IsNullOrWhiteSpace(InputString))
+            {
+                throw new ArgumentException($"Input cannot be empty.");
+            }
             var codes = ParseCsvToCodes(InputString);
             var total = GetTotalPrice(InputString);
             var lensCounts = new Dictionary<string, int>();
