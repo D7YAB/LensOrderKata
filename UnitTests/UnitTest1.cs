@@ -146,5 +146,20 @@ namespace UnitTests
             var ex = Assert.Throws<ArgumentException>(() => parser.CalculateOrderSummaryAsString(input));
             Assert.That(ex.Message, Is.EqualTo("Lens with code SV05 not found."));
         }
+
+        /// <summary>
+        /// Ensures that multiple invalid lens codes in the input string throw an ArgumentException
+        /// listing all invalid codes.
+        /// </summary>
+        [TestCase("SV01, XX01, VF03, YY02, BF02", "Invalid lens codes: XX01, YY02")]
+        public void MultipleInvalidCodes_ShouldThrowArgumentExceptionWithAllInvalidCodes(string input, string expectedMessage)
+        {
+            // Arrange
+            var parser = new LensCodeParser();
+
+            // Act & Assert
+            var ex = Assert.Throws<ArgumentException>(() => parser.CalculateOrderSummaryAsString(input));
+            Assert.That(ex.Message, Is.EqualTo(expectedMessage));
+        }
     }
 }
