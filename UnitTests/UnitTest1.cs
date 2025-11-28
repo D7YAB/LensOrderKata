@@ -117,5 +117,20 @@ namespace UnitTests
             // Assert
             Assert.That(summary, Is.EqualTo(expectedOutput));
         }
+
+        /// <summary>
+        /// Ensures that an empty input string throws an ArgumentException.
+        /// </summary>
+        [Test]
+        public void EmptyInput_ShouldThrowArgumentException()
+        {
+            // Arrange
+            var parser = new LensCodeParser();
+            var emptyInput = "";
+
+            // Act & Assert
+            var ex = Assert.Throws<ArgumentException>(() => parser.CalculateOrderSummaryAsString(emptyInput));
+            Assert.That(ex.Message, Is.EqualTo("Input cannot be empty."));
+        }
     }
 }
