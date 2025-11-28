@@ -65,5 +65,42 @@ namespace LensOrderKata
 
             return parsedCodes;
         }
+
+        /// <summary>
+        /// Generates a formatted summary of the order, including itemized lens codes, quantities, individual totals,
+        /// and the overall total price.
+        /// </summary>
+        public string CalculateOrderSummaryAsString(string InputString)
+        {
+
+            var codes = ParseCsvToCodes(InputString);
+            var total = GetTotalPrice(InputString);
+            var lensCounts = new Dictionary<string, int>();
+            var output = string.Empty;
+
+            foreach (var code in codes)
+            {
+                if (!lensCounts.ContainsKey(code))
+                {
+                    lensCounts.Add(code, 1);
+                }
+                else
+                {
+                    lensCounts[code]++;
+                }
+            }
+
+            foreach(var lens in lensCounts)
+            {
+                var lensDetails = GetLensByCode(lens.Key);
+                if(lensDetails != null)
+                {
+                    output += $"{lens.Key} x{lens.Value} = £{lensDetails.Price * lens.Value}\r\n";
+                }
+            }
+            output += $"Total = £{total}";
+
+            return output;
+        }
     }
 }

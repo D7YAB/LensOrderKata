@@ -112,7 +112,7 @@ namespace UnitTests
             var parser = new LensCodeParser();
 
             // Act
-            var summary = parser.CalculateOrderSummary(csvInput);
+            var summary = parser.CalculateOrderSummaryAsString(csvInput);
 
             // Assert
             Assert.That(summary, Is.EqualTo(expectedOutput));
