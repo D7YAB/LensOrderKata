@@ -17,18 +17,6 @@ namespace LensOrderKata
         }
 
         /// <summary>
-        /// Retrieves the lens associated with the specified code.
-        /// </summary>
-        /// <param name="code">The unique code identifying the lens to retrieve. Cannot be null.</param>
-        /// <returns>The lens that matches the specified code, or null if no matching lens is found.</returns>
-        public Lens? GetLensByCode(string code)
-        {
-            var lenses = lensRepository.GetAll();
-            var lens = lenses.FirstOrDefault(x => string.Equals(x.Code, code, StringComparison.OrdinalIgnoreCase));
-            return lens;
-        }
-
-        /// <summary>
         /// Generates a formatted summary of the order, including itemized lens codes, quantities, individual totals,
         /// and the overall total price.
         /// </summary>
