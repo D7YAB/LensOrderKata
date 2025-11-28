@@ -45,14 +45,14 @@ namespace LensOrderKata
 
             foreach (var code in codes)
             {
-                var lens = GetLensByCode(code);
-                if (lens == null)
+                try
+                {
+                    var lens = lensRepository.GetByCode(code);
+                    order.AddLens(lens);
+                }
+                catch (ArgumentException)
                 {
                     invalidCodes.Add(code);
-                }
-                else
-                {
-                    order.AddLens(lens);
                 }
             }
 

@@ -20,6 +20,8 @@ namespace LensOrderKata
                 throw new ArgumentException($"Lens with code {code} not found.");
             }
 
+            code = code.Trim();
+
             var lens = lenses
                 .FirstOrDefault(x => x.Code.Equals(code, StringComparison.OrdinalIgnoreCase));
 
