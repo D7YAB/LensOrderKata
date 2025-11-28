@@ -209,5 +209,16 @@ namespace UnitTests
             Assert.That(summary, Is.EqualTo(expectedOutput));
         }
 
+        /// <summary>
+        /// Verifies that the lens code parser correctly handles input codes regardless of letter casing.
+        /// </summary>
+        [TestCase("sv01, vf03, SV01, bf02", "SV01 x2 = £100\r\nVF03 x1 = £100\r\nBF02 x1 = £75\r\nTotal = £275")]
+        public void LowercaseInputCodes_ShouldBeHandledCorrectly(string input, string expectedOutput)
+        {
+            var parser = new LensCodeParser();
+            var summary = parser.CalculateOrderSummaryAsString(input);
+            Assert.That(summary, Is.EqualTo(expectedOutput));
+        }
+
     }
 }
