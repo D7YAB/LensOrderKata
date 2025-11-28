@@ -8,9 +8,12 @@ namespace LensOrderKata
     {
         private readonly ILensRepository lensRepository;
 
-        public LensCodeParser(ILensRepository lensRepository)
+        private readonly IInputParser inputParser;
+
+        public LensCodeParser(ILensRepository lensRepository, IInputParser inputParser)
         {
             this.lensRepository = lensRepository;
+            this.inputParser = inputParser;
         }
 
         /// <summary>
@@ -18,7 +21,7 @@ namespace LensOrderKata
         /// </summary>
         public double GetTotalPrice(string lensCodes)
         {
-            var lensCodesList = ParseCsvToCodes(lensCodes);
+            var lensCodesList = inputParser.Parse(lensCodes);
             double total = 0.0;
             foreach (var code in lensCodesList)
             {
@@ -58,39 +61,6 @@ namespace LensOrderKata
         }
 
         /// <summary>
-        /// Parses a comma-separated string and returns a list of individual code values.
-        /// </summary>
-        /// <param name="csv">A string containing code values separated by commas.</param>
-        /// <returns>A list of strings representing the individual codes parsed from the input.</returns>
-        public List<string> ParseCsvToCodes(string csv)
-        {
-            if(string.IsNullOrWhiteSpace(csv))
-            {
-                throw new ArgumentException($"Input cannot be empty.");
-            }
-
-            if (csv.Any(c => !char.IsLetterOrDigit(c) && c != ',' && !char.IsWhiteSpace(c)))
-            {
-                throw new ArgumentException("Invalid input detected. Please use commas to separate lens codes.");
-            }
-            var parsedCodes = new List<string>();
-
-            if (!csv.Contains(","))
-            {
-                parsedCodes = csv.Split(' ').ToList();
-                if (parsedCodes.Count>0 && GetLensByCode(csv.Trim()) is null)
-                {
-                    throw new ArgumentException("Invalid input detected. Please use commas to separate lens codes.");
-                }
-            }
-
-            // Split the input string by commas and trim any whitespace from each code
-            parsedCodes = csv.Split(',').Select(code => code.Trim()).ToList();
-
-            return parsedCodes;
-        }
-
-        /// <summary>
         /// Generates a formatted summary of the order, including itemized lens codes, quantities, individual totals,
         /// and the overall total price.
         /// </summary>
@@ -101,7 +71,7 @@ namespace LensOrderKata
                 throw new ArgumentException($"Input cannot be empty.");
             }
 
-            var codes = ParseCsvToCodes(InputString);
+            var codes = inputParser.Parse(InputString);
             var invalidCodes = new List<string>();
             var lensCounts = new Dictionary<string, int>();
 
