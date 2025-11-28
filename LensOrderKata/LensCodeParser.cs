@@ -35,7 +35,7 @@ namespace LensOrderKata
         /// <returns>The lens that matches the specified code, or null if no matching lens is found.</returns>
         public Lens? GetLensByCode(string code)
         {
-            var lens = lenses.FirstOrDefault(x => x.Code == code); ;
+            var lens = lenses.FirstOrDefault(x => string.Equals(x.Code, code, StringComparison.OrdinalIgnoreCase));
             return lens;
         }
 
@@ -98,7 +98,8 @@ namespace LensOrderKata
 
                 if (!lensCounts.ContainsKey(code))
                 {
-                    lensCounts.Add(code, 1);
+                    var lens = GetLensByCode(code);
+                    lensCounts.Add(lens.Code, 1);
                 }
                 else
                 {
@@ -120,7 +121,7 @@ namespace LensOrderKata
                 var lensDetails = GetLensByCode(lens.Key);
                 if(lensDetails != null)
                 {
-                    output += $"{lens.Key} x{lens.Value} = £{lensDetails.Price * lens.Value}\r\n";
+                    output += $"{lensDetails.Code} x{lens.Value} = £{lensDetails.Price * lens.Value}\r\n";
                 }
             }
             output += $"Total = £{total}";
