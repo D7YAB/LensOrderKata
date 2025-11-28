@@ -132,5 +132,19 @@ namespace UnitTests
             var ex = Assert.Throws<ArgumentException>(() => parser.CalculateOrderSummaryAsString(emptyInput));
             Assert.That(ex.Message, Is.EqualTo("Input cannot be empty."));
         }
+
+        /// <summary>
+        /// Ensures that an invalid lens code in the input string throws an ArgumentException.
+        /// </summary>
+        [TestCase("SV01, VF03, SV05, BF02")]
+        public void InvalidCodeInSummary_ShouldThrowArgumentException(string input)
+        {
+            // Arrange
+            var parser = new LensCodeParser();
+
+            // Act & Assert
+            var ex = Assert.Throws<ArgumentException>(() => parser.CalculateOrderSummaryAsString(input));
+            Assert.That(ex.Message, Is.EqualTo("Lens with code SV05 not found."));
+        }
     }
 }
