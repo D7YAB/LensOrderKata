@@ -6,12 +6,12 @@ namespace LensOrderKata
 {
     public class LensCodeParser
     {
-        Lens[] lenses = new Lens[]
+        private readonly ILensRepository lensRepository;
+
+        public LensCodeParser(ILensRepository lensRepository)
         {
-            new Lens { Code = "SV01", Description = "Single Vision", Price = 50.0 },
-            new Lens { Code = "BF02", Description = "Bifocal", Price = 75.0 },
-            new Lens { Code = "VF03", Description = "Varifocal", Price = 100.0 }
-        };
+            this.lensRepository = lensRepository;
+        }
 
         /// <summary>
         /// Calculates the total price for a collection of lenses specified by their codes.
@@ -35,6 +35,7 @@ namespace LensOrderKata
         /// <returns>The lens that matches the specified code, or null if no matching lens is found.</returns>
         public Lens? GetLensByCode(string code)
         {
+            var lenses = lensRepository.GetAll();
             var lens = lenses.FirstOrDefault(x => string.Equals(x.Code, code, StringComparison.OrdinalIgnoreCase));
             return lens;
         }
