@@ -220,5 +220,16 @@ namespace UnitTests
             Assert.That(summary, Is.EqualTo(expectedOutput));
         }
 
+        [TestCase("SV01;VF03;BF02")]
+        [TestCase("SV01|VF03|BF02")]
+        [TestCase("SV01 VF03 BF02")]
+        public void ParseCsvToCodes_WrongSeparators_ShouldThrowException(string input)
+        {
+            var parser = new LensCodeParser();
+
+            var ex = Assert.Throws<ArgumentException>(() => parser.ParseCsvToCodes(input));
+            Assert.That(ex.Message, Is.EqualTo("Invalid input detected. Please use commas to separate lens codes."));
+        }
+
     }
 }

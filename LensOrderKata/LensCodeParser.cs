@@ -63,6 +63,16 @@ namespace LensOrderKata
         /// <returns>A list of strings representing the individual codes parsed from the input.</returns>
         public List<string> ParseCsvToCodes(string csv)
         {
+            if(string.IsNullOrWhiteSpace(csv))
+            {
+                throw new ArgumentException($"Input cannot be empty.");
+            }
+
+            if (csv.Any(c => !char.IsLetterOrDigit(c) && c != ',' && !char.IsWhiteSpace(c)))
+            {
+                throw new ArgumentException("Invalid input detected. Please use commas to separate lens codes.");
+            }
+
             // Split the input string by commas and trim any whitespace from each code
             var parsedCodes = csv.Split(',').Select(code => code.Trim()).ToList();
 
