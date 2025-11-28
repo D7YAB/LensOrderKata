@@ -13,6 +13,9 @@ namespace LensOrderKata
             new Lens { Code = "VF03", Description = "Varifocal", Price = 100.0 }
         };
 
+        /// <summary>
+        /// Calculates the total price for a collection of lenses specified by their codes.
+        /// </summary>
         public double GetTotalPrice(string lensCodes)
         {
             var lensCodesList = ParseCsvToCodes(lensCodes);
