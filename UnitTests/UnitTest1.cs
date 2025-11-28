@@ -133,13 +133,10 @@ namespace UnitTests
         public void EmptyInput_ShouldThrowArgumentException()
         {
             // Arrange
-            var parser = new LensCodeParser(new InMemoryLensRepository(), new StringCsvInputParser());
+            var inputParser = new StringCsvInputParser();
             var emptyInput = "";
-            var lensOrderService = new LensOrderService(parser, new TextOrderSummaryFormatter());
-
-
             // Act & Assert
-            var ex = Assert.Throws<ArgumentException>(() => lensOrderService.ProcessOrder(emptyInput));
+            var ex = Assert.Throws<ArgumentException>(() => inputParser.Parse(emptyInput));
             Assert.That(ex.Message, Is.EqualTo("Input cannot be empty."));
         }
 
@@ -152,8 +149,6 @@ namespace UnitTests
             // Arrange
             var parser = new LensCodeParser(new InMemoryLensRepository(), new StringCsvInputParser());
             var lensOrderService = new LensOrderService(parser, new TextOrderSummaryFormatter());
-
-
             // Act & Assert
             var ex = Assert.Throws<ArgumentException>(() => lensOrderService.ProcessOrder(input));
             Assert.That(ex.Message, Is.EqualTo("Lens with code SV05 not found."));
@@ -169,8 +164,6 @@ namespace UnitTests
             // Arrange
             var parser = new LensCodeParser(new InMemoryLensRepository(), new StringCsvInputParser());
             var lensOrderService = new LensOrderService(parser, new TextOrderSummaryFormatter());
-
-
             // Act & Assert
             var ex = Assert.Throws<ArgumentException>(() => lensOrderService.ProcessOrder(input));
             Assert.That(ex.Message, Is.EqualTo(expectedMessage));
@@ -275,19 +268,17 @@ namespace UnitTests
         [TestCase("SV01,,BF02", "Input cannot contain empty codes.")]
         public void RepeatedCommas_ShouldThrowException(string input, string expectedMessage)
         {
-            var parser = new LensCodeParser(new InMemoryLensRepository(), new StringCsvInputParser());
-            var lensOrderService = new LensOrderService(parser, new TextOrderSummaryFormatter());
-            var ex = Assert.Throws<ArgumentException>(() => lensOrderService.ProcessOrder(input));
+            var inputParser = new StringCsvInputParser(); 
+            var ex = Assert.Throws<ArgumentException>(() => inputParser.Parse(input));
             Assert.That(ex.Message, Is.EqualTo(expectedMessage));
         }
 
         [Test]
         public void NullInput_ShouldThrowArgumentException()
         {
-            var parser = new LensCodeParser(new InMemoryLensRepository(), new StringCsvInputParser());
+            var inputParser = new StringCsvInputParser();
             string input = null;
-            var lensOrderService = new LensOrderService(parser, new TextOrderSummaryFormatter());
-            var ex = Assert.Throws<ArgumentException>(() => lensOrderService.ProcessOrder(input));
+            var ex = Assert.Throws<ArgumentException>(() => inputParser.Parse(input));
             Assert.That(ex.Message, Is.EqualTo("Input cannot be empty."));
         }
 
@@ -295,9 +286,8 @@ namespace UnitTests
         [TestCase("\t\n")]
         public void WhitespaceOnlyInput_ShouldThrowArgumentException(string input)
         {
-            var parser = new LensCodeParser(new InMemoryLensRepository(), new StringCsvInputParser());
-            var lensOrderService = new LensOrderService(parser, new TextOrderSummaryFormatter());
-            var ex = Assert.Throws<ArgumentException>(() => lensOrderService.ProcessOrder(input));
+            var inputParser = new StringCsvInputParser();
+            var ex = Assert.Throws<ArgumentException>(() => inputParser.Parse(input));
             Assert.That(ex.Message, Is.EqualTo("Input cannot be empty."));
         }
 
@@ -332,9 +322,8 @@ namespace UnitTests
         [TestCase(" , , ", "Input cannot contain empty codes.")]
         public void OnlySeparators_ShouldThrowException(string input, string expectedMessage)
         {
-            var parser = new LensCodeParser(new InMemoryLensRepository(), new StringCsvInputParser());
-            var lensOrderService = new LensOrderService(parser, new TextOrderSummaryFormatter());
-            var ex = Assert.Throws<ArgumentException>(() => lensOrderService.ProcessOrder(input));
+            var inputParser = new StringCsvInputParser();
+            var ex = Assert.Throws<ArgumentException>(() => inputParser.Parse(input));
             Assert.That(ex.Message, Is.EqualTo(expectedMessage));
         }
     }
