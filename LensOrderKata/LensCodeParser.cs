@@ -104,6 +104,11 @@ namespace LensOrderKata
             var invalidCodes = new List<string>();
             var lensCounts = new Dictionary<string, int>();
 
+            if (codes.Any(string.IsNullOrEmpty))
+            {
+                throw new ArgumentException($"Input cannot contain empty codes.");
+            }
+
             foreach (var code in codes)
             {
                 try 

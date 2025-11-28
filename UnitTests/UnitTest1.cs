@@ -242,5 +242,48 @@ namespace UnitTests
             Assert.That(ex.Message, Is.EqualTo("Invalid input detected. Please use commas to separate lens codes."));
         }
 
+        [TestCase(",SV01,BF02,", "Input cannot contain empty codes.")]
+        public void LeadingTrailingCommas_ShouldThrowException(string input, string expectedMessage)
+        {
+            var parser = new LensCodeParser();
+            var ex = Assert.Throws<ArgumentException>(() => parser.CalculateOrderSummaryAsString(input));
+            Assert.That(ex.Message, Is.EqualTo(expectedMessage));
+        }
+
+        [TestCase("SV01,,BF02", "Input cannot contain empty codes.")]
+        public void RepeatedCommas_ShouldThrowException(string input, string expectedMessage)
+        {
+            var parser = new LensCodeParser();
+            var ex = Assert.Throws<ArgumentException>(() => parser.CalculateOrderSummaryAsString(input));
+            Assert.That(ex.Message, Is.EqualTo(expectedMessage));
+        }
+
+        [Test]
+        public void NullInput_ShouldThrowArgumentException()
+        {
+            var parser = new LensCodeParser();
+            string input = null;
+            var ex = Assert.Throws<ArgumentException>(() => parser.CalculateOrderSummaryAsString(input));
+            Assert.That(ex.Message, Is.EqualTo("Input cannot be empty."));
+        }
+
+        [TestCase("    ")]
+        [TestCase("\t\n")]
+        public void WhitespaceOnlyInput_ShouldThrowArgumentException(string input)
+        {
+            var parser = new LensCodeParser();
+            var ex = Assert.Throws<ArgumentException>(() => parser.CalculateOrderSummaryAsString(input));
+            Assert.That(ex.Message, Is.EqualTo("Input cannot be empty."));
+        }
+
+        [TestCase(" sv01 , SV01 , vf03 ", "SV01 x2 = £100\r\nVF03 x1 = £100\r\nTotal = £200")]
+        public void MixedCaseWhitespaceAndDuplicates_ShouldReturnCorrectSummary(string input, string expectedOutput)
+        {
+            var parser = new LensCodeParser();
+            var summary = parser.CalculateOrderSummaryAsString(input);
+            Assert.That(summary, Is.EqualTo(expectedOutput));
+        }
+        
+
     }
 }
