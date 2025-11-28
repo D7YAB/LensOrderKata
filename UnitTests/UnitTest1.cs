@@ -151,7 +151,7 @@ namespace UnitTests
         /// Ensures that multiple invalid lens codes in the input string throw an ArgumentException
         /// listing all invalid codes.
         /// </summary>
-        [TestCase("SV01, XX01, VF03, YY02, BF02", "Invalid lens codes: XX01, YY02")]
+        [TestCase("SV01, XX01, VF03, YY02, BF02", "Lens with code XX01, YY02 not found.")]
         public void MultipleInvalidCodes_ShouldThrowArgumentExceptionWithAllInvalidCodes(string input, string expectedMessage)
         {
             // Arrange

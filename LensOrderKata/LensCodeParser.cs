@@ -79,13 +79,23 @@ namespace LensOrderKata
             {
                 throw new ArgumentException($"Input cannot be empty.");
             }
+
             var codes = ParseCsvToCodes(InputString);
-            var total = GetTotalPrice(InputString);
+            var invalidCodes = new List<string>();
             var lensCounts = new Dictionary<string, int>();
-            var output = string.Empty;
 
             foreach (var code in codes)
             {
+                try 
+                {
+                    GetPriceForCode(code);
+                }
+                catch (ArgumentException)
+                {
+                    invalidCodes.Add(code);
+                    continue;
+                }
+
                 if (!lensCounts.ContainsKey(code))
                 {
                     lensCounts.Add(code, 1);
@@ -96,7 +106,16 @@ namespace LensOrderKata
                 }
             }
 
-            foreach(var lens in lensCounts)
+            // Throw if there are invalid codes
+            if (invalidCodes.Any())
+            {
+                throw new ArgumentException($"Lens with code {string.Join(", ", invalidCodes)} not found.");
+            }
+
+            var total = GetTotalPrice(InputString);
+            var output = string.Empty;
+
+            foreach (var lens in lensCounts)
             {
                 var lensDetails = GetLensByCode(lens.Key);
                 if(lensDetails != null)
