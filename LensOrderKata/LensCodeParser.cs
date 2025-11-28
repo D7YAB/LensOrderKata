@@ -16,18 +16,9 @@ namespace LensOrderKata
             this.inputParser = inputParser;
         }
 
-        /// <summary>
-        /// Generates a formatted summary of the order, including itemized lens codes, quantities, individual totals,
-        /// and the overall total price.
-        /// </summary>
-        public string CalculateOrderSummaryAsString(string InputString)
+        public LensOrder ParseOrder(string input)
         {
-            if (string.IsNullOrWhiteSpace(InputString))
-            {
-                throw new ArgumentException("Input cannot be empty.");
-            }
-
-            var codes = inputParser.Parse(InputString);
+            var codes = inputParser.Parse(input);
             var order = new LensOrder();
             var invalidCodes = new List<string>();
 
@@ -45,9 +36,18 @@ namespace LensOrderKata
             }
 
             if (invalidCodes.Count > 0)
-            {
                 throw new ArgumentException($"Lens with code {string.Join(", ", invalidCodes)} not found.");
-            }
+
+            return order;
+        }
+
+        /// <summary>
+        /// Generates a formatted summary of the order, including itemized lens codes, quantities, individual totals,
+        /// and the overall total price.
+        /// </summary>
+        public string CalculateOrderSummaryAsString(string InputString)
+        {
+            var order = ParseOrder(InputString);
 
             var output = new StringBuilder();
             foreach (var orderedLens in order.GetOrderedLenses())
