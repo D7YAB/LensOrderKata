@@ -7,4 +7,10 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\LensOrderKata.Application\LensOrderKata.Application.csproj" />
+    <ProjectReference Include="..\LensOrderKata.Domain\LensOrderKata.Core.csproj" />
+    <ProjectReference Include="..\LensOrderKata.Infrastructure\LensOrderKata.Infrastructure.csproj" />
+  </ItemGroup>
+
 </Project>
